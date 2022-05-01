@@ -151,15 +151,14 @@ exports.resetpassword = async (req, res) => {
 //when we use asynchronous function we need try catch block
 exports.registerStaff = async (req, res) => {
   //controller for register
-  const { username, email, password, type, dept } = req.body; //destructur e method
+  const { username, email, password, type } = req.body; //destructur e method
 
   try {
     const user = await User.create({
       username,
       email,
       password,
-      type,
-      dept, //this.password filed of user.js in models
+      type, //this.password filed of user.js in models
     });
     sendToken(user, 200, res);
   } catch (error) {
@@ -181,6 +180,5 @@ const sendToken = (user, statusCode, res) => {
   const username = user.username;
   const email = user.email;
   const type = user.type;
-  const dept = user.dept;
-  res.status(200).json({ success: true, token, username, email, type, dept });
+  res.status(200).json({ success: true, token, username, email, type });
 };

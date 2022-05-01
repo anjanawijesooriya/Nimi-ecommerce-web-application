@@ -17,6 +17,7 @@ import LoginLogo from "../../assets/Login Register/register.jpeg";
 import { LoginOutlined } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import "antd/dist/antd.css";
 // import PasswordResetRequest from "../Dashboard/DashboardSubComponents/PasswordResetRequest";
 
 const { Header } = Layout;

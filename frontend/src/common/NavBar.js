@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Logo from "../assets/logo.png";
-import { Link, NavLink, useLocation, useParams } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import "antd/dist/antd.css";
 
 const NavBar = () => {
@@ -16,8 +16,18 @@ const NavBar = () => {
   const location = useLocation();
   const { pathname } = location;
   const { username } = useParams();
+  const history = useNavigate();
 
   console.log(location);
+
+  const logoutHandler = () => {
+    localStorage.removeItem("username");
+    localStorage.removeItem("email");
+    localStorage.setItem("authToken", null);
+    localStorage.removeItem("type");
+    history("/login");
+    window.location.reload();
+  }
 
   return (
     <>
@@ -90,7 +100,7 @@ const NavBar = () => {
                       </button>
                     </NavLink>
                   </div>
-                  <button className="inline-flex items-center bg-sky-600 text-white border-0 py-1 px-3 focus:outline-none hover:bg-black rounded-full text-base mt-4 md:mt-0 translate-x-4">
+                  <button className="inline-flex items-center bg-sky-600 text-white border-0 py-1 px-3 focus:outline-none hover:bg-black rounded-full text-base mt-4 md:mt-0 translate-x-4" onClick={logoutHandler}>
                     Logout
                     <ion-icon name="log-in"></ion-icon>
                   </button>

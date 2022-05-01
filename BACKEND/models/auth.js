@@ -28,7 +28,6 @@ const UserSchema = new Schema({
   resetPasswordExpire: Date,
 
   type: String,
-  dept: String,
 });
 
 //this is for register route

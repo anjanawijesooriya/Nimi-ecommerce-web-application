@@ -12,6 +12,7 @@ import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import Dashboard from "./components/User/Dashboard";
 import MyProfile from "./components/User/MyProfile";
+import AdminDashboard from "./components/Admin/Dashboard";
 
 const App = () => {
   return (
@@ -21,6 +22,8 @@ const App = () => {
           <Route path="/" element={[<NavBar />, <Home />, <Footer />]} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
+          {/*user*/}
           <Route
             path="/user-dashboard/:username"
             element={
@@ -38,6 +41,16 @@ const App = () => {
                 <NavBar />
                 <MyProfile />
                 <Footer />
+              </PrivateRoute>
+            }
+          />
+
+          {/*admin*/}
+          <Route
+            path="/admin-dashboard/:username"
+            element={
+              <PrivateRoute>
+                <AdminDashboard />
               </PrivateRoute>
             }
           />
