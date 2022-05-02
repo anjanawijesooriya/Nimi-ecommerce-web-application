@@ -29,3 +29,4 @@ app.listen(PORT, () => {
 });
 
 app.use("/api/auth", require("./BACKEND/routes/auth"));
+app.use("/products", require("./BACKEND/routes/products"));

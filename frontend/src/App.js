@@ -13,6 +13,7 @@ import Register from "./components/Register/Register";
 import Dashboard from "./components/User/Dashboard";
 import MyProfile from "./components/User/MyProfile";
 import AdminDashboard from "./components/Admin/Dashboard";
+import ViewItem from "./components/User/ViewItem";
 
 const App = () => {
   return (
@@ -40,6 +41,16 @@ const App = () => {
               <PrivateRoute>
                 <NavBar />
                 <MyProfile />
+                <Footer />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/user-dashboard/:username/viewitem/:id"
+            element={
+              <PrivateRoute>
+                <NavBar />
+                <ViewItem />
                 <Footer />
               </PrivateRoute>
             }

@@ -14,7 +14,7 @@ import "./Register.scss"
 import Logo from "../../assets/logo.png";
 import LoginLogo from "../../assets/Login Register/register.jpeg";
 
-import { LoginOutlined } from "@ant-design/icons";
+import { LoginOutlined, LoadingOutlined } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "antd/dist/antd.css";
@@ -204,7 +204,7 @@ const Register = () => {
                         htmlType="submit"
                         type={"primary"}
                         disabled={loading}
-                        icon={<Spin />}
+                        icon={<Spin indicator={<LoadingOutlined />} />}
                       >
                         &nbsp;Registration in Progress...
                       </Button>

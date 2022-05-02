@@ -4,11 +4,7 @@ import { Layout, Menu, Breadcrumb } from "antd";
 import { Button } from "antd";
 import {
   FundProjectionScreenOutlined,
-  ProfileOutlined,
-  CommentOutlined,
-  UserAddOutlined,
   ShoppingOutlined,
-  ShoppingCartOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
 
@@ -16,11 +12,15 @@ import "antd/dist/antd.css";
 import "./Dashboard.css";
 
 import CarouselView from "./CarouselView";
+import NavBar from "./NavBar";
 
 //payment components
 
 //product components
 import ProductDashboard from "./Product/ProductDashboard";
+import AddProduct from "./Product/AddProduct";
+import ViewProducts from "./Product/ViewProducts";
+import EditProduct from "./Product/EditProduct";
 
 import Logo from "../../assets/logo.png";
 
@@ -38,6 +38,9 @@ const Dashboard = () => {
 
   //product
   const queryProduct = param.get("_optProduct");
+  const queryAddProduct = param.get("_product");
+  const queryViewProduct = param.get("_product");
+  const queryEditProduct = param.get("_product");
 
   //order
   const queryOrder = param.get("_optOrder");
@@ -137,7 +140,7 @@ const Dashboard = () => {
               history(
                 `/admin-dashboard/${localStorage.getItem(
                   "username"
-                )}?optOrder=product`
+                )}?_optOrder=order`
               );
             }}
           >
@@ -168,7 +171,7 @@ const Dashboard = () => {
           style={{ padding: 0, textAlign: "center" }}
         >
           <h1 id="header" style={{ fontFamily: "serif", fontSize: "20px" }}>
-            {queryProduct === "product"
+            {queryProduct === "product" || queryAddProduct === "addproduct" || queryViewProduct === "allproduct" || queryEditProduct === "edit"
               ? "Product Management"
               : queryOrder === "order"
               ? "Order Management"
@@ -184,18 +187,20 @@ const Dashboard = () => {
           {location.pathname ===
             `/admin-dashboard/${localStorage.getItem("username")}` &&
             !queryProduct &&
-            !queryOrder && <CarouselView />}
-          {queryProduct === "product" && <ProductDashboard />}
+            !queryAddProduct &&
+            !queryOrder &&
+            !queryViewProduct && 
+            !queryEditProduct && <CarouselView />}
+          {queryProduct === "product" && [<NavBar />, <ProductDashboard />]}
           {/* {queryOrder === "order" && <Order />}
 
           {queryDisplayproduct === "allproduct" && [
             <ProductNavBar />,
             <Product />,
-          ]}
-          {queryAddproduct === "addproduct" && [
-            <ProductNavBar />,
-            <AddProduct />,
           ]} */}
+          {queryAddProduct === "addproduct" && [<NavBar />, <AddProduct />]}
+          {queryViewProduct === "allproduct" && [ <NavBar />, <ViewProducts />]}
+          {queryEditProduct === "edit" && [<NavBar />, <EditProduct />]}
         </Content>
         <Footer style={{ textAlign: "center" }}>
           Copyright © {date.getFullYear()} Bliss E-Commerce

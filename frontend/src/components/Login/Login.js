@@ -14,7 +14,7 @@ import "./Login.scss";
 import Logo from "../../assets/logo.png";
 import LoginLogo from "../../assets/Login Register/ecommerce.jpg";
 
-import { LoginOutlined } from "@ant-design/icons";
+import { LoginOutlined, LoadingOutlined } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "antd/dist/antd.css";
@@ -169,7 +169,7 @@ const Login = () => {
                         htmlType="submit"
                         type={"primary"}
                         disabled={loading}
-                        icon={<Spin />}
+                        icon={<Spin indicator={<LoadingOutlined />} />}
                       >
                         &nbsp;Authenticating...
                       </Button>

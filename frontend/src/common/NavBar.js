@@ -59,7 +59,7 @@ const NavBar = () => {
               <li key={Link.name} className="md:ml-2 text-base md:my-0 my-7">
                 <a
                   href={Link.link}
-                  className=" text-white hover:text-orange-500 py-2 hover:py-2 px-4 hover:px-4 hover:rounded-full  duration-500"
+                  className=" text-white hover:text-orange-300 bg-gray-400 rounded-full py-2 hover:py-2 px-4 hover:px-4 hover:rounded-full  duration-500"
                 >
                   {Link.name}
                 </a>
@@ -86,7 +86,7 @@ const NavBar = () => {
                     >
                       <button
                         type="button"
-                        class="bg-gray-400 h-10 w-10 mt-1 ml-8 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                        class="bg-orange-500 h-10 w-10 mt-1 ml-8 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                         id="user-menu-button"
                         aria-expanded="false"
                         aria-haspopup="true"
