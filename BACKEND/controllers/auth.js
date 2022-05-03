@@ -27,6 +27,42 @@ exports.register = async (req, res) => {
   }
 };
 
+exports.getData = async (req, res) => {
+  await User.find()
+    .then((user) => res.json(user))
+    .catch((error) => res.status(500).json({ success: false, error: error }));
+};
+
+exports.deleteUser = async (req, res) => {
+  const { id } = req.params;
+
+  await User.findByIdAndDelete(id)
+    .then(() => res.json({ message: "Successfully Deleted" }))
+    .catch((error) => res.status(500).json({ success: false, error: error }));
+};
+
+exports.getUser = async (req, res) => {
+  const { id } = req.params;
+
+  await User.findById(id)
+    .then((user) => res.json(user))
+    .catch((error) => res.status(500).json({ success: false, error: error }));
+};
+
+exports.editUser = async (req, res) => {
+  const { id } = req.params;
+
+  const { username, email, password } = req.body;
+
+  await User.findByIdAndUpdate(id, {
+    username,
+    email,
+    password,
+  })
+    .then(() => res.json({ success: true }))
+    .catch((error) => res.json({ success: false, error: error }));
+};
+
 exports.login = async (req, res) => {
   //controller for login
   const { email, password } = req.body;

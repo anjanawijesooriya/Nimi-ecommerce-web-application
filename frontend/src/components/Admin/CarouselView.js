@@ -23,19 +23,21 @@ const CarouselView = () => {
   }, []);
   return (
     <>
-      <Carousel autoplay effect="fade">
-        {loader === false && <Spin />}
+      <div className=" mt-24">
+        <Carousel autoplay effect="fade">
+          {loader === false && <Spin />}
 
-        <div>
-          <img src={CarouselImg1} style={contentStyle} />
-        </div>
-        <div>
-          <img src={CarouselImg2} style={contentStyle} />
-        </div>
-        <div>
-          <img src={CarouselImg3} style={contentStyle} />
-        </div>
-      </Carousel>
+          <div>
+            <img src={CarouselImg1} style={contentStyle} />
+          </div>
+          <div>
+            <img src={CarouselImg2} style={contentStyle} />
+          </div>
+          <div>
+            <img src={CarouselImg3} style={contentStyle} />
+          </div>
+        </Carousel>
+      </div>
     </>
   );
 };

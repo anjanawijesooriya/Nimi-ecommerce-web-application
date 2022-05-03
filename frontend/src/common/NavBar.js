@@ -86,7 +86,7 @@ const NavBar = () => {
                     >
                       <button
                         type="button"
-                        class="bg-orange-500 h-10 w-10 mt-1 ml-8 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                        class="bg-orange-500 h-10 w-10 mt-1 ml-8 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800"
                         id="user-menu-button"
                         aria-expanded="false"
                         aria-haspopup="true"

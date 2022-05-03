@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
-import { Button, Spin, Card, Row, Col } from "antd";
+import { Button, Spin, Card } from "antd";
 import axios from "axios";
+import { ShoppingCartOutlined } from "@ant-design/icons";
+import "antd/dist/antd.css";
 
 const ViewItem = () => {
   const { id } = useParams();
@@ -20,7 +22,7 @@ const ViewItem = () => {
   }, []);
 
   useEffect(() => {
-    setTimeout(() => setLoader(!loader), 5000);
+    setTimeout(() => setLoader(!loader), 2000);
   }, []);
 
   return (
@@ -31,49 +33,97 @@ const ViewItem = () => {
             <Spin style={{ marginTop: "200px" }} />
           </center>
         ) : (
-          <div
-            style={{
-              display: "inline-block",
-              padding: 40,
-              justifyItems: "center",
-              marginTop: 30,
-            }}
-          >
-            <center>
-              <div className="site-card-wrapper">
-                <Card
-                  hoverable
-                  style={{ width: 300 }}
-                  cover={<img alt="example" src={data.image} />}
-                >
-                  <span style={{ fontSize: 20 }}>
-                    <b>{data.productName}</b>
-                  </span>{" "}
-                  <br />
-                  <br />
-                  <p style={{ fontSize: 20 }}>
-                    <b>{data.productDescrip}</b>
-                  </p>{" "}
-                  <br />
-                  <span style={{ fontSize: 20 }}>
-                    <b>Rs.{data.productPrice}</b>
-                  </span>{" "}
-                  <br />
-                  {/* <span style={{ fontSize: 20 }}>
-                    <b>Items Left: {i.qty}</b>
-                  </span>{" "}
-                  <br /> */}
-                  📅 <span>{moment(data.dateAdded).format("DD MMM YYYY")}</span>{" "}
-                  <br />
-                  <span style={{ fontSize: 20 }}>
-                    <b>{data.status}</b>
-                  </span>{" "}
-                  <br />
-                  <br />
-                </Card>
-              </div>
-            </center>
-          </div>
+          <center>
+            <div
+              style={{
+                display: "inline-block",
+                padding: 40,
+                justifyItems: "center",
+                marginTop: 50,
+              }}
+            >
+              <center>
+                <div>
+                  <Card
+                    hoverable
+                    style={{ width: 800 }}
+                    cover={
+                      <div style={{ display: "flex" }}>
+                        <div className=" p-4">
+                          <img
+                            alt="example"
+                            src={data.image}
+                            style={{
+                              backgroundSize: "cover",
+                              height: 500,
+                              width: 500,
+                            }}
+                          />
+                        </div>
+                        <div className=" mt-40">
+                          <span style={{ fontSize: 20 }}>
+                            <b>{data.productName}</b>
+                          </span>{" "}
+                          <p style={{ fontSize: 20 }}>
+                            <b>{data.productDescrip}</b>
+                          </p>{" "}
+                          <br />
+                          <span style={{ fontSize: 20 }}>
+                            <b>Rs.{data.productPrice}</b>
+                          </span>{" "}
+                          <br />
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;📅{" "}
+                          <span>
+                            {moment(data.dateAdded).format("DD MMM YYYY")}
+                          </span>{" "}
+                          <br />
+                          <br />
+                          <br />
+                          <div className=" mt-20">
+                            {data.status === "Out Of Stock" ? (
+                              <span style={{ fontSize: 20 }}>
+                                <b>
+                                  <strike>{data.status}</strike>
+                                </b>
+                              </span>
+                            ) : (
+                              <span style={{ fontSize: 20 }}>
+                                <b>{data.status}</b>
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  >
+                    {" "}
+                    {data.status === "Out Of Stock" ? (
+                      <Button
+                        type="primary"
+                        shape="round"
+                        danger
+                        icon={<ShoppingCartOutlined />}
+                        size="large"
+                        disabled
+                      >
+                        Add to Cart
+                      </Button>
+                    ) : (
+                      <Button
+                        type="primary"
+                        shape="round"
+                        danger
+                        icon={<ShoppingCartOutlined />}
+                        size="large"
+                      >
+                        Add to Cart
+                      </Button>
+                    )}
+                  </Card>
+                </div>
+              </center>
+            </div>
+          </center>
         )}
       </div>
     </section>

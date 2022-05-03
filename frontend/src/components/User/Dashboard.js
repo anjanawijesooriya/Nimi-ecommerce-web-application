@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Image, Button, Spin, Card, Row, Col } from "antd";
+import { Image, Button, Spin, Card, Row, Col, Form, Input } from "antd";
 import axios from "axios";
-
-//categories
-// import fashions from "../../assets/Home/fashion.jpg";
-// import jewelleries from "../../assets/Home/jewellery.jpg";
-// import makeups from "../../assets/Home/makeup.jpg";
-// import electronics from "../../assets/Home/electronics.jpg";
-// import toys from "../../assets/Home/toys.jpg";
-// import compphone from "../../assets/Home/computerphone.jpg";
 import moment from "moment";
-import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+
+import FilterCategory from "./FilterCategory";
+import "antd/dist/antd.css";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
   const [loader, setLoader] = useState(false);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     (async () =>
-      await axios
-        .get("http://localhost:8070/products/")
-        .then((res) => {setData(res.data); console.log(res)}))();
+      await axios.get("http://localhost:8070/products/").then((res) => {
+        setData(res.data);
+        console.log(res);
+      }))();
   }, []);
 
   useEffect(() => {
@@ -30,135 +26,78 @@ const Dashboard = () => {
 
   const { Meta } = Card;
 
-  // const filteredData = data.filter(
-  //   (el) => el?.productCategory?.toLowerCase().indexOf(query) >= 0
-  // );
+  const filteredData = data.filter(
+    (el) => el?.productName?.toLowerCase().indexOf(query) >= 0
+  );
 
   return (
-    <section className=" bg-gray-600 block mx-auto">
-      {/* <center>
-        <div className="container">
-          <div className=" inline-block columns-2  my-20 gap-24">
-            <div>
-              <Image style={{ width: 400 }} src={fashions} preview={false} />
-              <div className="top-1/2 w-full text-center text-4xl">
-                <Button type="primary" danger size="large" block>
-                  <div className=" font-semibold text-xl">Fashions</div>
-                </Button>
-              </div>
-            </div>
-            <br />
-            <br />
-            <div>
-              <Image style={{ width: 400 }} src={jewelleries} preview={false} />
-              <div className="top-1/2 w-full text-center text-4xl">
-                <Button type="primary" danger size="large" block>
-                  <div className=" font-semibold text-xl">Jewelleries</div>
-                </Button>
-              </div>
-            </div>
-            <br />
-            <br />
-            <div>
-              <Image style={{ width: 400 }} src={makeups} preview={false} />
-              <div className="top-1/2 w-full text-center text-4xl">
-                <Button type="primary" danger size="large" block>
-                  <div className=" font-semibold text-xl">Makeups</div>
-                </Button>
-              </div>
-            </div>
-            <br />
-            <br />
-            <div>
-              <Image style={{ width: 400 }} src={electronics} preview={false} />
-              <div className="top-1/2 w-full text-center text-4xl">
-                <Button type="primary" danger size="large" block>
-                  <div className=" font-semibold text-xl">Electronics</div>
-                </Button>
-              </div>
-            </div>
-            <br />
-            <br />
-            <div>
-              <Image style={{ width: 400 }} src={toys} preview={false} />
-              <div className="top-1/2 w-full text-center text-4xl">
-                <Button type="primary" danger size="large" block>
-                  <div className=" font-semibold text-xl">Toys</div>
-                </Button>
-              </div>
-            </div>
-            <br />
-            <br />
-            <div>
-              <Image style={{ width: 400 }} src={compphone} preview={false} />
-              <div className="top-1/2 w-full text-center text-4xl">
-                <Button type="primary" danger size="large" block>
-                  <div className=" font-semibold text-xl">
-                    Computers and Phones
-                  </div>
-                </Button>
-              </div>
-            </div>
+    <>
+      <section className=" bg-gray-600 block mx-auto">
+        <div class="flex items-center justify-center ml-96">
+          <div class="flex border-2 border-gray-200 rounded mt-20 ml-96 translate-x-3/4">
+            <input
+              type="text"
+              className="px-4 py-2 w-80"
+              placeholder="Search..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
           </div>
         </div>
-      </center> */}
-      <div>
-        {loader === false ? (
-          <center>
-            <Spin style={{ marginTop: "200px" }} />
-          </center>
-        ) : (
-          data.map((i) => (
-            <div
-              style={{
-                display: "inline-block",
-                padding: 40,
-                justifyItems: "center",
-                marginTop: 30,
-              }}
-            >
-              <div className="site-card-wrapper">
-                <Card
-                  hoverable
-                  style={{ width: 300 }}
-                  cover={<img alt="example" src={i.image} />}
-                >
-                  <span style={{ fontSize: 20 }}>
-                    <b>{i.productName}</b>
-                  </span>{" "}
-                  <br />
-                  <br />
-                  <p style={{ fontSize: 20 }}>
-                    <b>{i.productDescrip}</b>
-                  </p>{" "}
-                  <br />
-                  <span style={{ fontSize: 20 }}>
-                    <b>Rs.{i.productPrice}</b>
-                  </span>{" "}
-                  <br />
-                  {/* <span style={{ fontSize: 20 }}>
-                    <b>Items Left: {i.qty}</b>
-                  </span>{" "}
-                  <br /> */}
-                  📅 <span>{moment(i.dateAdded).format("DD MMM YYYY")}</span>{" "}
-                  <br />
-                  <span style={{ fontSize: 20 }}>
-                    <b>{i.status}</b>
-                  </span>{" "}
-                  <br />
-                  <br />
-                  {loader === false ? (
-                    <center>
-                      <Button
-                        type="primary"
-                        shape="round"
-                        size="large"
-                        icon={<Spin indicator={<LoadingOutlined />} />}
-                      >
-                        Item View in Progress...
-                      </Button>
-                    </center>
-                  ) : (
+        <div className=" float-right -mt-8 mr-14">
+          <FilterCategory />
+        </div>
+        <div>
+          {loader === false ? (
+            <center>
+              <Spin style={{ marginTop: "200px" }} />
+            </center>
+          ) : (
+            filteredData.map((i) => (
+              <div
+                style={{
+                  display: "inline-block",
+                  padding: 40,
+                  justifyItems: "center",
+                  marginTop: 30,
+                }}
+              >
+                <div className="site-card-wrapper">
+                  <Card
+                    hoverable
+                    style={{ width: 300 }}
+                    cover={<img alt="example" src={i.image} />}
+                  >
+                    <span style={{ fontSize: 20 }}>
+                      <b>{i.productName}</b>
+                    </span>{" "}
+                    <br />
+                    <br />
+                    <p style={{ fontSize: 20 }}>
+                      <b>{i.productDescrip}</b>
+                    </p>{" "}
+                    <br />
+                    <span style={{ fontSize: 20 }}>
+                      <b>Rs.{i.productPrice}</b>
+                    </span>{" "}
+                    <br />
+                    📅 <span>
+                      {moment(i.dateAdded).format("DD MMM YYYY")}
+                    </span>{" "}
+                    <br />
+                    {i.status === "Out Of Stock" ? (
+                      <span style={{ fontSize: 20 }}>
+                        <b>
+                          <strike>{i.status}</strike>
+                        </b>
+                      </span>
+                    ) : (
+                      <span style={{ fontSize: 20 }}>
+                        <b>{i.status}</b>
+                      </span>
+                    )}
+                    <br />
+                    <br />
                     <center>
                       <Link
                         to={`/user-dashboard/${localStorage.getItem(
@@ -170,14 +109,14 @@ const Dashboard = () => {
                         </Button>
                       </Link>
                     </center>
-                  )}
-                </Card>
+                  </Card>
+                </div>
               </div>
-            </div>
-          ))
-        )}
-      </div>
-    </section>
+            ))
+          )}
+        </div>
+      </section>
+    </>
   );
 };
 

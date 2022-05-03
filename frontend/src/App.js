@@ -14,6 +14,7 @@ import Dashboard from "./components/User/Dashboard";
 import MyProfile from "./components/User/MyProfile";
 import AdminDashboard from "./components/Admin/Dashboard";
 import ViewItem from "./components/User/ViewItem";
+import EditProfile from "./components/User/EditProfile";
 
 const App = () => {
   return (
@@ -51,6 +52,16 @@ const App = () => {
               <PrivateRoute>
                 <NavBar />
                 <ViewItem />
+                <Footer />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/user-dashboard/:username/myProfile/edit/:id"
+            element={
+              <PrivateRoute>
+                <NavBar />
+                <EditProfile />
                 <Footer />
               </PrivateRoute>
             }
