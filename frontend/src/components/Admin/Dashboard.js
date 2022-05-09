@@ -4,7 +4,6 @@ import { Layout, Menu, Breadcrumb } from "antd";
 import { Button } from "antd";
 import {
   FundProjectionScreenOutlined,
-  ShoppingOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
 
@@ -13,8 +12,6 @@ import "./Dashboard.css";
 
 import CarouselView from "./CarouselView";
 import NavBar from "./NavBar";
-
-//payment components
 
 //product components
 import ProductDashboard from "./Product/ProductDashboard";
@@ -42,11 +39,6 @@ const Dashboard = () => {
   const queryViewProduct = param.get("_product");
   const queryEditProduct = param.get("_product");
 
-  //order
-  const queryOrder = param.get("_optOrder");
-
-  //Payment
-
   const onCollapse = (collapsed) => {
     setCollapsed(collapsed);
   };
@@ -68,9 +60,6 @@ const Dashboard = () => {
         break;
       case "product":
         document.getElementById("header").innerHTML = "Product Management";
-        break;
-      case "order":
-        document.getElementById("header").innerHTML = "Order Management";
         break;
       default:
         break;
@@ -111,8 +100,6 @@ const Dashboard = () => {
           defaultSelectedKeys={
             queryProduct === "product"
               ? ["1"]
-              : queryOrder === "order"
-              ? ["2"]
               : null
           }
         >
@@ -130,21 +117,6 @@ const Dashboard = () => {
             }}
           >
             Product Management
-          </Menu.Item>
-          <Menu.Item
-            key="2"
-            icon={<ShoppingOutlined />}
-            className="text-lg"
-            onClick={() => {
-              setHeader("order");
-              history(
-                `/admin-dashboard/${localStorage.getItem(
-                  "username"
-                )}?_optOrder=order`
-              );
-            }}
-          >
-            Order Management
           </Menu.Item>
         </Menu>
         {collapsed === false ? (
@@ -173,8 +145,6 @@ const Dashboard = () => {
           <h1 id="header" style={{ fontFamily: "serif", fontSize: "20px" }}>
             {queryProduct === "product" || queryAddProduct === "addproduct" || queryViewProduct === "allproduct" || queryEditProduct === "edit"
               ? "Product Management"
-              : queryOrder === "order"
-              ? "Order Management"
               : "Dashboard"}
           </h1>
         </Header>
@@ -188,16 +158,9 @@ const Dashboard = () => {
             `/admin-dashboard/${localStorage.getItem("username")}` &&
             !queryProduct &&
             !queryAddProduct &&
-            !queryOrder &&
             !queryViewProduct && 
             !queryEditProduct && <CarouselView />}
           {queryProduct === "product" && [<NavBar />, <ProductDashboard />]}
-          {/* {queryOrder === "order" && <Order />}
-
-          {queryDisplayproduct === "allproduct" && [
-            <ProductNavBar />,
-            <Product />,
-          ]} */}
           {queryAddProduct === "addproduct" && [<NavBar />, <AddProduct />]}
           {queryViewProduct === "allproduct" && [ <NavBar />, <ViewProducts />]}
           {queryEditProduct === "edit" && [<NavBar />, <EditProduct />]}

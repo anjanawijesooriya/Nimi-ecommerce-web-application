@@ -159,6 +159,9 @@ const AddProduct = () => {
                 {
                   required: true,
                 },
+                {
+                  max: 60
+                }
               ]}
             >
               <TextArea
@@ -171,7 +174,7 @@ const AddProduct = () => {
                   </Tooltip>
                 }
                 showCount
-                maxLength={100}
+                maxLength={60}
                 value={productDescrip}
                 onChange={(e) => setProductDescrip(e.target.value)}
               />

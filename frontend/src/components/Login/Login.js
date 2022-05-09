@@ -18,7 +18,7 @@ import { LoginOutlined, LoadingOutlined } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "antd/dist/antd.css";
-// import PasswordResetRequest from "../Dashboard/DashboardSubComponents/PasswordResetRequest";
+import PasswordResetRequest from "./PasswordResetRequest";
 
 const { Header } = Layout;
 
@@ -96,7 +96,9 @@ const Login = () => {
           style={{ padding: 0, textAlign: "center" }}
         >
           <center>
-            <img src={Logo} style={{ maxWidth: "100px" }} />
+            <Link to={"/"}>
+              <img src={Logo} style={{ maxWidth: "100px" }} />
+            </Link>
             <h1 id="header" style={{ fontFamily: "serif", fontSize: "50px" }}>
               Bliss{" "}
             </h1>
@@ -154,7 +156,7 @@ const Login = () => {
                 <Checkbox onClick={showPassword}>Show Password</Checkbox>
                 <br /> <br /> <br />
                 {/* <a className="forget-text">Forgot password?</a> */}
-                {/* <PasswordResetRequest /> */}
+                <PasswordResetRequest />
                 <div className="btn-wrap">
                   <center>
                     {isError && (

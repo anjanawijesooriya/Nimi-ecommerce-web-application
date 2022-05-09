@@ -1,5 +1,8 @@
-import React from "react";
-import { Carousel, Image, Button } from "antd";
+import React, { useState, useEffect } from "react";
+import { Carousel, Image, Button, Spin, Card } from "antd";
+import axios from "axios";
+import moment from "moment";
+import { Link } from "react-router-dom";
 
 import "antd/dist/antd.css";
 //carousel
@@ -9,15 +12,27 @@ import bg3 from "../assets/Home/bg7.jpg";
 import bg4 from "../assets/Home/bg8.jpg";
 import bg5 from "../assets/Home/bg10.jpg";
 
-//categories
-import fashions from "../assets/Home/fashion.jpg";
-import jewelleries from "../assets/Home/jewellery.jpg";
-import makeups from "../assets/Home/makeup.jpg";
-import electronics from "../assets/Home/electronics.jpg";
-import toys from "../assets/Home/toys.jpg";
-import compphone from "../assets/Home/computerphone.jpg";
 
 const Home = () => {
+  const [data, setData] = useState([]);
+  const [loader, setLoader] = useState(false);
+  const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    (async () =>
+      await axios.get("http://localhost:8070/products/").then((res) => {
+        setData(res.data);
+        console.log(res);
+      }))();
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => setLoader(!loader), 5000);
+  }, []);
+
+  const filteredData = data.filter(
+    (el) => el?.productName?.toLowerCase().indexOf(query) >= 0
+  );
   return (
     <>
       <section>
@@ -43,75 +58,87 @@ const Home = () => {
       <section className=" bg-gray-800 block mx-auto">
         <center>
           <div className="container">
-            <div className=" inline-block columns-2  my-20 gap-24">
-              <div>
-                <Image style={{ width: 400 }} src={fashions} preview={false} />
-                <div className="top-1/2 w-full text-center text-4xl">
-                  <Button type="primary" danger size="large" block>
-                    <div className=" font-semibold text-xl">Fashions</div>
-                  </Button>
-                </div>
-              </div>
-              <br />
-              <br />
-              <div>
-                <Image
-                  style={{ width: 400 }}
-                  src={jewelleries}
-                  preview={false}
+            <div class="flex items-center justify-center ml-96">
+              <div class="flex border-2 border-gray-200 rounded mt-20 ml-80 translate-x-80">
+                <input
+                  type="text"
+                  className="px-4 py-2 w-80"
+                  placeholder="Search..."
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
                 />
-                <div className="top-1/2 w-full text-center text-4xl">
-                  <Button type="primary" danger size="large" block>
-                    <div className=" font-semibold text-xl">Jewelleries</div>
-                  </Button>
-                </div>
               </div>
-              <br />
-              <br />
-              <div>
-                <Image style={{ width: 400 }} src={makeups} preview={false} />
-                <div className="top-1/2 w-full text-center text-4xl">
-                  <Button type="primary" danger size="large" block>
-                    <div className=" font-semibold text-xl">Makeups</div>
-                  </Button>
-                </div>
-              </div>
-              <br />
-              <br />
-              <div>
-                <Image
-                  style={{ width: 400 }}
-                  src={electronics}
-                  preview={false}
-                />
-                <div className="top-1/2 w-full text-center text-4xl">
-                  <Button type="primary" danger size="large" block>
-                    <div className=" font-semibold text-xl">Electronics</div>
-                  </Button>
-                </div>
-              </div>
-              <br />
-              <br />
-              <div>
-                <Image style={{ width: 400 }} src={toys} preview={false} />
-                <div className="top-1/2 w-full text-center text-4xl">
-                  <Button type="primary" danger size="large" block>
-                    <div className=" font-semibold text-xl">Toys</div>
-                  </Button>
-                </div>
-              </div>
-              <br />
-              <br />
-              <div>
-                <Image style={{ width: 400 }} src={compphone} preview={false} />
-                <div className="top-1/2 w-full text-center text-4xl">
-                  <Button type="primary" danger size="large" block>
-                    <div className=" font-semibold text-xl">
-                      Computers and Phones
+            </div>
+            <div>
+              {loader === false ? (
+                <center>
+                  <Spin style={{ marginTop: "200px" }} />
+                </center>
+              ) : filteredData.length === 0 ? (
+                <center>
+                  <span style={{ color: "red", fontSize: "50px" }}>
+                    No Matching Results Found
+                  </span>
+                </center>
+              ) : (
+                filteredData.map((i) => (
+                  <div
+                    style={{
+                      display: "inline-block",
+                      padding: 40,
+                      justifyItems: "center",
+                      marginTop: 30,
+                    }}
+                  >
+                    <div className="site-card-wrapper">
+                      <Card
+                        hoverable
+                        style={{ width: 300 }}
+                        cover={<img alt="example" src={i.image} />}
+                      >
+                        <span style={{ fontSize: 20 }}>
+                          <b>{i.productName}</b>
+                        </span>{" "}
+                        <br />
+                        <br />
+                        <p style={{ fontSize: 16 }}>
+                          <b>{i.productDescrip}</b>
+                        </p>{" "}
+                        <br />
+                        <span style={{ fontSize: 20 }}>
+                          <b>Rs.{i.productPrice}</b>
+                        </span>{" "}
+                        <br />
+                        📅{" "}
+                        <span>
+                          {moment(i.dateAdded).format("DD MMM YYYY")}
+                        </span>{" "}
+                        <br />
+                        {i.status === "Out Of Stock" ? (
+                          <span style={{ fontSize: 20 }}>
+                            <b>
+                              <strike>{i.status}</strike>
+                            </b>
+                          </span>
+                        ) : (
+                          <span style={{ fontSize: 20 }}>
+                            <b>{i.status}</b>
+                          </span>
+                        )}
+                        <br />
+                        <br />
+                        <center>
+                          <Link to={`/viewitem/${i._id}`}>
+                            <Button type="primary" shape="round" size="large">
+                              View Item
+                            </Button>
+                          </Link>
+                        </center>
+                      </Card>
                     </div>
-                  </Button>
-                </div>
-              </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </center>

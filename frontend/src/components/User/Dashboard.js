@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Image, Button, Spin, Card, Row, Col, Form, Input } from "antd";
+import { Image, Button, Spin, Card, Dropdown, Space, Menu } from "antd";
 import axios from "axios";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
-import FilterCategory from "./FilterCategory";
 import "antd/dist/antd.css";
+import { DownOutlined, FilterTwoTone } from "@ant-design/icons";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
   const [loader, setLoader] = useState(false);
   const [query, setQuery] = useState("");
 
+  let [filteredDataCategory, setFilteredDataCategory] = useState([]);
+
   useEffect(() => {
     (async () =>
       await axios.get("http://localhost:8070/products/").then((res) => {
         setData(res.data);
+        setFilteredDataCategory(res.data);
         console.log(res);
       }))();
   }, []);
@@ -24,10 +27,100 @@ const Dashboard = () => {
     setTimeout(() => setLoader(!loader), 5000);
   }, []);
 
+  const handleFilter = (filteredValue) => {
+    console.log(filteredValue);
+    if (filteredValue !== "Reset") {
+      filteredDataCategory = data.filter(
+        (el) => el.productCategory.indexOf(filteredValue) >= 0
+      );
+      console.log(filteredDataCategory);
+      setFilteredDataCategory(filteredDataCategory);
+    } else setFilteredDataCategory(data);
+  };
+
+  console.log(filteredDataCategory);
+
   const { Meta } = Card;
 
-  const filteredData = data.filter(
+  filteredDataCategory = filteredDataCategory.filter(
     (el) => el?.productName?.toLowerCase().indexOf(query) >= 0
+  );
+
+  const menu = (
+    <Menu
+      items={[
+        {
+          label: (
+            <div>
+              <option value="Fashions" onClick={() => handleFilter("Fashions")}>
+                Fashions
+              </option>
+            </div>
+          ),
+        },
+        {
+          label: (
+            <div>
+              <option value="Makeups" onClick={() => handleFilter("Makeups")}>
+                Makeups
+              </option>
+            </div>
+          ),
+        },
+        {
+          label: (
+            <div>
+              <option
+                value="Jewelleries"
+                onClick={() => handleFilter("Jewelleries")}
+              >
+                Jewelleries
+              </option>
+            </div>
+          ),
+        },
+        {
+          label: (
+            <div>
+              <option
+                value="Electronics"
+                onClick={() => handleFilter("Electronics")}
+              >
+                Electrics
+              </option>
+            </div>
+          ),
+        },
+        {
+          label: (
+            <div>
+              <option value="Toys" onClick={() => handleFilter("Toys")}>
+                Toys
+              </option>
+            </div>
+          ),
+        },
+        {
+          label: (
+            <div>
+              <option
+                value="Computers and Phones"
+                onClick={() => handleFilter("Computers and Phones")}
+              >
+                Computers & Phones
+              </option>
+            </div>
+          ),
+        },
+        {
+          label: (
+            <div>
+              <Button onClick={() => handleFilter("Reset")}>Reset</Button>
+            </div>
+          ),
+        },
+      ]}
+    />
   );
 
   return (
@@ -45,15 +138,26 @@ const Dashboard = () => {
           </div>
         </div>
         <div className=" float-right -mt-8 mr-14">
-          <FilterCategory />
+          <Dropdown overlay={menu}>
+            <a onClick={(e) => e.preventDefault()}>
+              <Space>
+                <FilterTwoTone style={{ fontSize: 20 }} />
+                <DownOutlined />
+              </Space>
+            </a>
+          </Dropdown>
         </div>
         <div>
           {loader === false ? (
             <center>
               <Spin style={{ marginTop: "200px" }} />
             </center>
+          ) : filteredDataCategory.length === 0 ? (
+            <center>
+              <span style={{ color: "red", fontSize: "50px"}}>No Matching Results Found</span>
+            </center>
           ) : (
-            filteredData.map((i) => (
+            filteredDataCategory.map((i) => (
               <div
                 style={{
                   display: "inline-block",
@@ -73,7 +177,7 @@ const Dashboard = () => {
                     </span>{" "}
                     <br />
                     <br />
-                    <p style={{ fontSize: 20 }}>
+                    <p style={{ fontSize: 16 }}>
                       <b>{i.productDescrip}</b>
                     </p>{" "}
                     <br />

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import moment from "moment";
-import { Button, Spin, Card, notification } from "antd";
+import { Button, Spin, Card } from "antd";
 import axios from "axios";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
-
-import Cart from "./Cart";
 
 const ViewItem = () => {
   const { id } = useParams();
@@ -26,44 +24,6 @@ const ViewItem = () => {
   useEffect(() => {
     setTimeout(() => setLoader(!loader), 2000);
   }, []);
-
-  const addToCart = async (value) => {
-    const productName = value.productName;
-    const productDescrip = value.productDescrip;
-    const productCategory = value.productCategory;
-    const productPrice = value.productPrice;
-    const qty = value.qty;
-    const image = value.image;
-    const dateAdded = value.dateAdded;
-    const status = value.status;
-
-    const user = localStorage.getItem("username");
-    try {
-      Cart.set(productName, {
-        productName,
-        productDescrip,
-        productCategory,
-        productPrice,
-        qty,
-        image,
-        dateAdded,
-        status,
-        user,
-      });
-      console.log(Cart);
-      notification.info({
-        message: `Notification`,
-        description: "Successfully added to the cart 🛒",
-        placement: "top",
-      });
-    } catch (error) {
-      notification.error({
-        message: `Notification`,
-        description: error.response.data.error,
-        placement: "top",
-      });
-    }
-  };
 
   return (
     <section className=" bg-gray-600 block mx-auto">
@@ -137,29 +97,22 @@ const ViewItem = () => {
                     }
                   >
                     {" "}
-                    {data.status === "Out Of Stock" ? (
-                      <Button
-                        type="primary"
-                        shape="round"
-                        danger
-                        icon={<ShoppingCartOutlined />}
-                        size="large"
-                        disabled
-                      >
-                        Add to Cart
-                      </Button>
-                    ) : (
-                      <Button
-                        type="primary"
-                        shape="round"
-                        danger
-                        icon={<ShoppingCartOutlined />}
-                        size="large"
-                        onClick={() => addToCart(data)}
-                      >
-                        Add to Cart
-                      </Button>
-                    )}
+                    <Link to={"/login"}>
+                      <span style={{ color: "blue" }}>
+                        Make Sure to Login First
+                      </span>{" "}
+                    </Link>
+                    <Button
+                      type="primary"
+                      shape="round"
+                      danger
+                      icon={<ShoppingCartOutlined />}
+                      size="large"
+                      disabled
+                      className=" ml-5"
+                    >
+                      Add to Cart
+                    </Button>
                   </Card>
                 </div>
               </center>

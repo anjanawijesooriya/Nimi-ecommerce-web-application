@@ -18,7 +18,7 @@ import axios from "axios";
 
 import "antd/dist/antd.css";
 import UserImg from "../../assets/user.jpg";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const layout = {
   labelCol: {
@@ -44,13 +44,15 @@ const EditProfile = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const history = useNavigate();
+
   const { id } = useParams();
 
   const [form] = Form.useForm();
 
   useEffect(() => {
     setTimeout(() => {
-      setLoader(!loader);
+      setLoader(true);
     }, 5000);
     (async () => {
       await axios
@@ -108,13 +110,11 @@ const EditProfile = () => {
       );
       setTimeout(() => {
         //set a time out
-        setLoader(false);
         notification.info({
           message: `Notification`,
           description: "Successfully updated the user details 😘",
           placement,
         });
-        form.resetFields();
       }, 5000); //5seconds timeout
     } catch (error) {
       notification.error({
@@ -142,157 +142,6 @@ const EditProfile = () => {
   };
   return (
     <>
-      {/* <section className=" bg-gray-600 block mx-auto">
-        {loader === false ? (
-          <center>
-            <Spin style={{ marginTop: "200px" }} />
-          </center>
-        ) : (
-          <div className=" mt-52">
-            <Form
-              {...layout}
-              form={form}
-              name="control-hooks"
-              onFinish={() => userHandlerUpdate("top")}
-            >
-              <center>
-                {error && <span style={{ color: "red" }}>{error}</span>}
-              </center>
-              <Form.Item
-                name="username"
-                label="UserName"
-                rules={[
-                  {
-                    required: true,
-                  },
-                ]}
-              >
-                <Input
-                  style={{ width: "50%" }}
-                  placeholder="enter your username"
-                  prefix={<FileDoneOutlined className="site-form-item-icon" />}
-                  suffix={
-                    <Tooltip title="Enter Username ex: John">
-                      <InfoCircleOutlined
-                        style={{ color: "rgba(0,0,0,.45)" }}
-                      />
-                    </Tooltip>
-                  }
-                  showCount
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  type="text"
-                />
-              </Form.Item>
-              <Form.Item
-                name="email"
-                label="Email"
-                rules={[
-                  {
-                    required: true,
-                  },
-                ]}
-              >
-                <Input
-                  style={{ width: "50%" }}
-                  placeholder="enter your email"
-                  prefix={<FileDoneOutlined className="site-form-item-icon" />}
-                  suffix={
-                    <Tooltip title="Enter Email ex: John@gmail.com">
-                      <InfoCircleOutlined
-                        style={{ color: "rgba(0,0,0,.45)" }}
-                      />
-                    </Tooltip>
-                  }
-                  showCount
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="email"
-                />
-              </Form.Item>
-              <Form.Item
-                name="password"
-                label="Password"
-                rules={[
-                  {
-                    required: true,
-                  },
-                ]}
-              >
-                <Input
-                  style={{ width: "50%" }}
-                  placeholder="enter your password"
-                  prefix={<FileDoneOutlined className="site-form-item-icon" />}
-                  suffix={
-                    <Tooltip title="Enter Password ex: *******">
-                      <InfoCircleOutlined
-                        style={{ color: "rgba(0,0,0,.45)" }}
-                      />
-                    </Tooltip>
-                  }
-                  showCount
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  type="password"
-                  id="password"
-                />
-              </Form.Item>
-              <Form.Item
-                name="repassword"
-                label="Re-Enter Password"
-                rules={[
-                  {
-                    required: true,
-                  },
-                ]}
-              >
-                <Input
-                  style={{ width: "50%" }}
-                  placeholder="enter your password again"
-                  prefix={<FileDoneOutlined className="site-form-item-icon" />}
-                  suffix={
-                    <Tooltip title="Enter Password ex: *******">
-                      <InfoCircleOutlined
-                        style={{ color: "rgba(0,0,0,.45)" }}
-                      />
-                    </Tooltip>
-                  }
-                  showCount
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  type="password"
-                  id="password1"
-                />
-              </Form.Item>
-              <div className=" ml-96 translate-x-60">
-                <Form.Item>
-                  <Checkbox onClick={showPassword}>Show Password</Checkbox>
-                </Form.Item>
-              </div>
-              {isError && (
-                <small style={{ color: "red" }}>
-                  Something went wrong. Please try again later.
-                </small>
-              )}
-              <Form.Item {...tailLayout}>
-                &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;
-                <Button type="primary" htmlType="submit">
-                  {loader === false ? (
-                    <>
-                      <Spin indicator={<LoadingOutlined />} /> Updating in
-                      Progess...
-                    </>
-                  ) : (
-                    "Submit"
-                  )}
-                </Button>{" "}
-                &nbsp;&nbsp; &nbsp;&nbsp;
-              </Form.Item>
-            </Form>
-          </div>
-        )}
-      </section> */}
       <section className=" bg-gray-600 block mx-auto">
         <div>
           {loader === false ? (
@@ -313,7 +162,13 @@ const EditProfile = () => {
                   <Card
                     hoverable
                     style={{ width: 600 }}
-                    cover={<img alt="user" src={UserImg} style={{height: 300, width:300}}/>}
+                    cover={
+                      <img
+                        alt="user"
+                        src={UserImg}
+                        style={{ height: 300, width: 300 }}
+                      />
+                    }
                   >
                     <Form
                       {...layout}
@@ -378,73 +233,9 @@ const EditProfile = () => {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           type="email"
+                          disabled
                         />
                       </Form.Item>
-                      <Form.Item
-                        name="password"
-                        label="Password"
-                        rules={[
-                          {
-                            required: true,
-                          },
-                        ]}
-                      >
-                        <Input
-                          style={{ width: "65%" }}
-                          placeholder="enter your password"
-                          prefix={
-                            <FileDoneOutlined className="site-form-item-icon" />
-                          }
-                          suffix={
-                            <Tooltip title="Enter Password ex: *******">
-                              <InfoCircleOutlined
-                                style={{ color: "rgba(0,0,0,.45)" }}
-                              />
-                            </Tooltip>
-                          }
-                          showCount
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          type="password"
-                          id="password"
-                        />
-                      </Form.Item>
-                      <Form.Item
-                        name="repassword"
-                        label="Re-Enter Password"
-                        rules={[
-                          {
-                            required: true,
-                          },
-                        ]}
-                      >
-                        <Input
-                          style={{ width: "65%" }}
-                          placeholder="enter your password again"
-                          prefix={
-                            <FileDoneOutlined className="site-form-item-icon" />
-                          }
-                          suffix={
-                            <Tooltip title="Enter Password ex: *******">
-                              <InfoCircleOutlined
-                                style={{ color: "rgba(0,0,0,.45)" }}
-                              />
-                            </Tooltip>
-                          }
-                          showCount
-                          value={confirmPassword}
-                          onChange={(e) => setConfirmPassword(e.target.value)}
-                          type="password"
-                          id="password1"
-                        />
-                      </Form.Item>
-                      <div className=" ml-28">
-                        <Form.Item>
-                          <Checkbox onClick={showPassword}>
-                            Show Password
-                          </Checkbox>
-                        </Form.Item>
-                      </div>
                       {isError && (
                         <small style={{ color: "red" }}>
                           Something went wrong. Please try again later.
